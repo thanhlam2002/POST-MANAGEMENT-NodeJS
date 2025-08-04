@@ -1,23 +1,24 @@
 const jwt = require('jsonwebtoken');
 
-// Middleware này dùng để kiểm tra JWT Token hợp lệ trước khi xử lý API
 module.exports = (req, res, next) => {
-    // Bỏ qua kiểm tra token cho các route /login và /register
-    if (req.path === '/login' || req.path === '/register') return next();
+    // Các route không cần check token
+    const publicPaths = ['/login', '/register'];
+    const isGetPosts = req.method === 'GET' && req.path.startsWith('/posts');
 
-    // Lấy header Authorization
+    if (publicPaths.includes(req.path) || isGetPosts) {
+        return next();  // Bỏ qua kiểm tra Token
+    }
+
     const authHeader = req.headers['authorization'];
-    if (!authHeader) return res.status(401).send('Access Denied');  // Không có header
+    if (!authHeader) return res.status(401).send('Access Denied');
 
-    // Token sẽ nằm sau "Bearer ", cần tách ra
-    const token = authHeader.split(' ')[1];  // Cắt bỏ "Bearer"
-    if (!token) return res.status(401).send('Token Missing');  // Nếu không có token thực tế
+    const token = authHeader.split(' ')[1];
+    if (!token) return res.status(401).send('Token Missing');
 
     try {
-        // Xác thực token và gắn dữ liệu user vào request
         req.user = jwt.verify(token, process.env.JWT_SECRET);
-        next();  // Cho phép đi tiếp sang controller
+        next();
     } catch (err) {
-        res.status(400).send('Invalid Token');  // Token sai hoặc hết hạn
+        res.status(400).send('Invalid Token');
     }
 };
