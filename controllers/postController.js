@@ -1,5 +1,5 @@
 const Post = require('../models/Post');
-const cacheService = require('../services/cacheService');
+// const cacheService = require('../services/cacheService');
 const eventService = require('../services/eventService');
 const exportService = require('../services/exportService');
 
@@ -78,3 +78,4 @@ exports.exportPosts = async (req, res) => {
     await exportService.exportToCSV(posts);  // Gọi service export CSV
     res.download('posts.csv');  // Trả file CSV cho client download
 };
+
