@@ -83,26 +83,8 @@ GET /posts?page=1&limit=5&category=tech&sortBy=title
 
 ---
 
-## Triển khai (Go Live)
-
-### Render.com
-1. Push code lên GitHub.
-2. Trên Render dashboard: tạo Web Service, kết nối GitHub.
-3. Thiết lập:
-   - Build command: `npm install`
-   - Start command: `node server.js`
-   - Env vars: `MONGO_URI`, `JWT_SECRET`, `PORT`
-4. Deploy và lấy URL public.
-
-### Railway.app
-- Cũng tương tự, dễ sử dụng miễn phí.
-
-**Lưu ý**: Upload file thumbnail sẽ bị mất nếu server restart do lưu trên filesystem (Render free). Có thể xử lý bằng lưu lên Cloud Storage nếu cần thực tế.
-
----
-
 ## Hướng dẫn test (Postman)
-1. Import file Collection JSON (mình sẽ cung cấp).
+1. Import file Collection JSON
 2. Test lần lượt các chức năng:
    - Đăng ký → Đăng nhập → Lấy token JWT.
    - CRUD bài viết (gửi token qua header `Authorization: Bearer <token>`).
